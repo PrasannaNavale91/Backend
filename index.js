@@ -34,13 +34,10 @@ app.use("/book", bookRoute);
 app.use("/user", userRoute);
 
 // deployment code
-if(process.env.NODE_ENV === "production"){
-    const dirPath = path.resolve();
-    app.use(express.static("Frontend/dist"));
-    app.get("*", (req, res) => {
-        res.sendFile(path.resolve(dirPath,"Frontend", "dist", "index.html"));
-    })
-}
+app.get("/", (req, res, next)=>{return res.status(200).json({
+    success: true,
+    message: "HELLO WORLD AGAIN"
+})});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
