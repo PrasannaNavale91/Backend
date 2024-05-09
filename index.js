@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 // import { fileURLToPath } from 'url';
-// import path ,{ dirname } from 'path';
+import path , { dirname } from 'path';
 
 import bookRoute from "./route/book.route.js";
 import userRoute from "./route/user.route.js";
@@ -33,13 +33,14 @@ try{
 app.use("/book", bookRoute);
 app.use("/user", userRoute);
 
-// Get the directory name of the current module
-// const __dirname = dirname(fileURLToPath(import.meta.url));
-
-// app.get("/", (req, res) => {
-//     app.use(express.static(path.resolve(__dirname, "Frontend", "dist")));
-//     res.sendFile(path.resolve(__dirname, "Frontend", "dist", "index.html"));
-// });
+// deployment code
+if(process.env.NODE_ENV === "production"){
+    const dirPath = path.resolve();
+    app.use(express.static("Frontend/dist"));
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(dirPath,"Frontend", "dist", "index.html"));
+    })
+}
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
